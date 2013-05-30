@@ -2,18 +2,49 @@ __author__ = 'Maikel Hofman'
 
 import numpy as np
 import cv2
+from multibus import BusServer, BusCore, BusClient
 
 
 class ImageProcessor():
+    """ Image processing class
+
+    Uses multibus on port 15000 to receive commands.
+
+    """
     def __init__(self):
+        self._bus = BusServer.BusServer(15000)
         self.Threshold = 170
         self.GaussianSigma = 0.5
+
+    def start(self):
+        """ Starts listening
+
+        Returns:
+            Nothing
+        """
+        self._bus.listen()
+
+        while True:
+           packet = self._bus.getPacket()
+           self._ProcessPacket(packet)
+
+    def _ProcessPacket(self, packet):
+        """ Process an incoming packet
+
+        Parameters:
+            packet -- instance of Multibus.Packet
+
+        Returns:
+            Nothing
+        """
+        # do something
+        print("Process")
 
     def process(self, Image):
         """ Process image to find the laser line.
 
         Keyword arguments:
-            Image -- 3 dimensional array off the picture
+            Image -- 3 dimensional array of the image
 
         Return:
             Array consisting of tuples with a x and a y coordinate of the laserline

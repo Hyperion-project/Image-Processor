@@ -37,8 +37,17 @@ class ImageProcessor():
         Returns:
             Nothing
         """
-        # do something
-        print("Process")
+        if packet.action == BusCore.PacketType.PROCESSPICTURE:
+            # First get the coordinates from the picture
+            coords = self.process(cv2.imread(packet.data["pictureLocation"]))
+
+            # Process these coords to get 3D coordinates
+
+        elif packet.action == BusCore.PacketType.CALIBRATE:
+            # Do something
+            print()
+        else:
+            print("Unknown Packet\n")
 
     def process(self, Image):
         """ Process image to find the laser line.
